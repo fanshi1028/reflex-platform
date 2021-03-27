@@ -121,6 +121,9 @@ in rec {
 
     # Can be "assembleRelease", "assembleDebug", or "bundleRelease"
     , gradleTask ? (if isRelease then "assembleRelease" else "assembleDebug")
+
+    # abi version to build, please check source of impl.nix for possible values
+    , abiVersions
     }:
     assert builtins.match "^([A-Za-z][A-Za-z0-9_]*\\.)*[A-Za-z][A-Za-z0-9_]*$" applicationId != null;
     nixpkgs.lib.makeOverridable impl.buildApp {
@@ -145,6 +148,7 @@ in rec {
               universalApk
               mavenDeps
               usesCleartextTraffic
-              gradleTask;
+              gradleTask
+              abiVersions;
     };
 }
