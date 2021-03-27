@@ -53,7 +53,7 @@ in {
               myHaskellPackages = ghcAndroidAarch32;
             };
           };
-          abiVersions = if abiVersions != null then abiVersions else attrNames appSOs;
+          abiVs = if abiVersions != null then abiVersions else attrNames appSOs;
       in nixpkgs.runCommand "android-app" {
         buildGradle = builtins.toFile "build.gradle" (import ./build.gradle.nix {
           inherit applicationId version additionalDependencies releaseKey universalApk;
@@ -69,7 +69,8 @@ in {
           inherit displayName;
         });
         applicationMk = builtins.toFile "Application.mk" (import ./Application.mk.nix {
-          inherit nixpkgs abiVersions;
+          inherit nixpkgs;
+          abiVersions = abiVs;
         });
         javaSrc = nixpkgs.buildEnv {
           name = applicationId + "-java";
@@ -117,7 +118,7 @@ in {
 
               '' + sharedLibsCmd + ''
             }
-        '') abiVersions) + ''
+        '') abiVs) + ''
           rsync -r --chmod=+w "${assets}"/ "$out/assets/"
           rsync -r --chmod=+w "${resources}"/ "$out/res/"
           [ -d "$out/assets" ]
