@@ -126,6 +126,8 @@ in
   #   { executableName :: String
   #   , applicationId :: String
   #   , displayName :: String
+  #   , abiVersions :: List of String
+  #     ^ Optional
   #   , package :: PackageSet -> Derivation
   #     ^ Optional
   #   }

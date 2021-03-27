@@ -53,7 +53,7 @@ in {
               myHaskellPackages = ghcAndroidAarch32;
             };
           };
-          abiVersions = attrNames appSOs;
+          abiVersions = if abiVersions != null then abiVersions else attrNames appSOs;
       in nixpkgs.runCommand "android-app" {
         buildGradle = builtins.toFile "build.gradle" (import ./build.gradle.nix {
           inherit applicationId version additionalDependencies releaseKey universalApk;
